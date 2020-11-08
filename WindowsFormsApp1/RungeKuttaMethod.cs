@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace WindowsFormsApp1
             Series series = new Series();
             while (x <= X)
             {
-                series.Points.AddXY(x,y);
+                series.Points.AddXY(x, y);
 
                 y = next_y(x, y, h);
                 x = next_x(x, h);
@@ -52,7 +53,7 @@ namespace WindowsFormsApp1
                     return null;
                 }
             }
-            series.Name="Runge–Kutta method";
+            series.Name = ("Runge–Kutta method");
             return series;
         }
 
@@ -66,30 +67,42 @@ namespace WindowsFormsApp1
             {
                 series.Points.AddXY(x, error);
 
-                error = Math.Abs(solution(next_x(x, h)) - (next_y(x, solution(x), h)));
+                error = Math.Abs(solution(next_x(x, h)) - (next_y(x, solution(x), h))); //(solution(x) + h*f(x, y));
                 x = next_x(x, h);
             }
-            series.Name = "Runge–Kutta's local error";
+            series.Name = ("Runge–Kutta's local error");
             return series;
         }
 
-        public Series GlobalError(double x0, double y0, double X, double h)
+        public Series GlobalError(double x0, double y0, double X, double n0, double N)
         {
-            double x = x0;
-            double y = y0;
-            double error = Math.Abs(solution(x) - y);
-
-
             Series series = new Series();
-            while (x <= X)
+            for (double ns = n0; ns <= N; ns++)
             {
-                series.Points.AddXY(x,error);
+                double h = (X - x0) / ns;
+                double x = x0;
+                double y = y0;
+                double error = Math.Abs(solution(x) - y);
+                
+                for (; x <= X; x += h)
+                {
 
-                y = next_y(x, y, h);
-                x = next_x(x, h);
-                error = Math.Abs(solution(x) - y);
+                    y = next_y(x, y, h);
+                    //x = next_x(x, h);
+                    double temp = Math.Abs(solution(x+h) - y);
+                    if (temp > error) error = temp;
+                }
+                if (Math.Abs(x - X) <= 0.0000001)
+                {
+                    y = next_y(X, y, h);
+                    x = X;
+                    double tem = Math.Abs(solution(x+h) - y);
+                    if (tem > error) error = tem;
+                }
+                //Debug.WriteLine(ns + " " + error + " - Runge");
+                series.Points.AddXY(ns, error);
             }
-            series.Name = "Runge–Kutta's global error";
+            series.Name = ("Runge–Kutta's global error");
             return series;
         }
     }

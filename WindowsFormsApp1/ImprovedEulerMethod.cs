@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,21 +53,36 @@ namespace WindowsFormsApp1
             return series;
         }
 
-        public Series GlobalError(double x0, double y0, double X, double h)
+        public Series GlobalError(double x0, double y0, double X, double n0, double N)
         {
-            double x = x0;
-            double y = y0;
-            double error = Math.Abs(solution(x) - y);
-
 
             Series series = new Series();
-            while (x <= X)
-            {
-                series.Points.AddXY(x, error);
+            for (double ns = n0; ns <= N; ns++) {
+                double h = (X - x0) / ns;
+                double x = x0;
+                double y = y0;
+                double error = Math.Abs(solution(x) - y);
 
-                y = next_y(x, y, h);
-                x = next_x(x, h);
-                error = Math.Abs(solution(x) - y);
+
+
+                for (; x <= X; x += h)
+                {
+
+                    y = next_y(x, y, h);
+                    //x = next_x(x, h);
+                    double temp = Math.Abs(solution(x+h) - y);
+                    if (temp > error) error = temp;
+                }
+                if (Math.Abs(x - X) <= 0.0001)
+                {
+                    y = next_y(X, y, h);
+                    x = X;
+                    double tem = Math.Abs(solution(x+h) - y);
+                    if (tem > error) error = tem;
+                }
+                //Debug.WriteLine(ns + " " + error + " - ImpEuler");
+
+                series.Points.AddXY(ns, error);
             }
             series.Name = "Improved Euler's global error";
             return series;

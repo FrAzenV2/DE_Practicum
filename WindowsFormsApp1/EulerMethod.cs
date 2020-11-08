@@ -51,21 +51,34 @@ namespace WindowsFormsApp1
             return series;
         }
 
-        public Series GlobalError(double x0, double y0, double X, double h)
+        public Series GlobalError(double x0, double y0, double X, double n0, double N)
         {
-            double x = x0;
-            double y = y0;
-            double error = Math.Abs(solution(x) - y);
-
-
             Series series = new Series();
-            while (x <= X)
+            for (double ns = n0; ns <= N; ns++)
             {
-                series.Points.AddXY(x, y);
+                double h = (X - x0) / ns;
+                double x = x0;
+                double y = y0;
+                double error = Math.Abs(solution(x) - y);
 
-                y = next_y(x, y, h);
-                x = next_x(x, h);
-                error = Math.Abs(solution(x) - y);
+
+
+                for (; x <= X; x += h)
+                {
+
+                    y = next_y(x, y, h);
+                    //x = next_x(x, h);
+                    double temp = Math.Abs(solution(x+h) - y);
+                    if (temp > error) error = temp;
+                }
+                if (Math.Abs(x - X) <= 0.000001)
+                {
+                    y = next_y(X, y, h);
+                    x = X;
+                    double tem = Math.Abs(solution(x+h) - y);
+                    if (tem > error) error = tem;
+                }
+                series.Points.AddXY(ns, error);
             }
             series.Name = ("Euler's global error");
             return series;

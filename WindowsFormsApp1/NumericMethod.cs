@@ -16,12 +16,12 @@ namespace WindowsFormsApp1
         
         public double f(double x, double y)
         {
-            return ((3 * y + 2 * x * y) / Math.Pow(x, 2));
+            return ((3 * y + 2 * x * y) / Math.Pow(x, 2));// (2 * Math.Pow(x, 3) + 2 * y / x); - 4 var/ curr -22
         }
 
         public double solution(double x)
         {
-            return Math.Exp(3)*Math.Exp(-3 / x)*Math.Pow(x,2);
+            return Math.Exp(3) * Math.Exp(-3.0f / x) * Math.Pow(x, 2); //(Math.Pow(x, 2) + Math.Pow(x, 4));  - 22 var
         }
 
         public double next_x(double x, double h)

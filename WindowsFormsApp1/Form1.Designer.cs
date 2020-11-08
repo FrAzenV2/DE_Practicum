@@ -39,6 +39,7 @@
             this.GTEGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.LTEGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.MainGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.Exact_check = new System.Windows.Forms.CheckBox();
             this.ErrorText = new System.Windows.Forms.Label();
             this.plot_button = new System.Windows.Forms.Button();
             this.Runge_check = new System.Windows.Forms.CheckBox();
@@ -52,6 +53,8 @@
             this.y0_input = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.x0_input = new System.Windows.Forms.TextBox();
+            this.n0_text = new System.Windows.Forms.Label();
+            this.n0_textbox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -75,6 +78,9 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.n0_text);
+            this.splitContainer1.Panel2.Controls.Add(this.n0_textbox);
+            this.splitContainer1.Panel2.Controls.Add(this.Exact_check);
             this.splitContainer1.Panel2.Controls.Add(this.ErrorText);
             this.splitContainer1.Panel2.Controls.Add(this.plot_button);
             this.splitContainer1.Panel2.Controls.Add(this.Runge_check);
@@ -136,6 +142,16 @@
             this.MainGraph.TabIndex = 0;
             this.MainGraph.Text = "Graph";
             // 
+            // Exact_check
+            // 
+            this.Exact_check.AutoSize = true;
+            this.Exact_check.Location = new System.Drawing.Point(22, 316);
+            this.Exact_check.Name = "Exact_check";
+            this.Exact_check.Size = new System.Drawing.Size(119, 20);
+            this.Exact_check.TabIndex = 13;
+            this.Exact_check.Text = "Exact Solution";
+            this.Exact_check.UseVisualStyleBackColor = true;
+            // 
             // ErrorText
             // 
             this.ErrorText.AutoSize = true;
@@ -163,7 +179,7 @@
             // Runge_check
             // 
             this.Runge_check.AutoSize = true;
-            this.Runge_check.Location = new System.Drawing.Point(22, 218);
+            this.Runge_check.Location = new System.Drawing.Point(22, 277);
             this.Runge_check.Name = "Runge_check";
             this.Runge_check.Size = new System.Drawing.Size(161, 20);
             this.Runge_check.TabIndex = 10;
@@ -174,7 +190,7 @@
             // EulerImp_check
             // 
             this.EulerImp_check.AutoSize = true;
-            this.EulerImp_check.Location = new System.Drawing.Point(22, 182);
+            this.EulerImp_check.Location = new System.Drawing.Point(22, 240);
             this.EulerImp_check.Name = "EulerImp_check";
             this.EulerImp_check.Size = new System.Drawing.Size(186, 20);
             this.EulerImp_check.TabIndex = 9;
@@ -185,7 +201,7 @@
             // Euler_check
             // 
             this.Euler_check.AutoSize = true;
-            this.Euler_check.Location = new System.Drawing.Point(22, 147);
+            this.Euler_check.Location = new System.Drawing.Point(22, 205);
             this.Euler_check.Name = "Euler_check";
             this.Euler_check.Size = new System.Drawing.Size(124, 20);
             this.Euler_check.TabIndex = 8;
@@ -197,15 +213,16 @@
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label4.Location = new System.Drawing.Point(19, 99);
+            this.label4.Location = new System.Drawing.Point(19, 155);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(17, 16);
             this.label4.TabIndex = 7;
             this.label4.Text = "N";
+            //this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // n_input
             // 
-            this.n_input.Location = new System.Drawing.Point(47, 96);
+            this.n_input.Location = new System.Drawing.Point(47, 152);
             this.n_input.Multiline = true;
             this.n_input.Name = "n_input";
             this.n_input.Size = new System.Drawing.Size(212, 22);
@@ -252,7 +269,6 @@
             this.y0_input.TabIndex = 2;
             this.y0_input.Text = "1";
             this.y0_input.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.y0_input.TextChanged += new System.EventHandler(this.y0_input_TextChanged);
             // 
             // label1
             // 
@@ -275,6 +291,26 @@
             this.x0_input.Text = "1";
             this.x0_input.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.x0_input.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // n0_text
+            // 
+            this.n0_text.AutoSize = true;
+            this.n0_text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.n0_text.Location = new System.Drawing.Point(19, 127);
+            this.n0_text.Name = "n0_text";
+            this.n0_text.Size = new System.Drawing.Size(24, 16);
+            this.n0_text.TabIndex = 15;
+            this.n0_text.Text = "n0";
+            // 
+            // n0_textbox
+            // 
+            this.n0_textbox.Location = new System.Drawing.Point(47, 124);
+            this.n0_textbox.Multiline = true;
+            this.n0_textbox.Name = "n0_textbox";
+            this.n0_textbox.Size = new System.Drawing.Size(212, 22);
+            this.n0_textbox.TabIndex = 14;
+            this.n0_textbox.Text = "1";
+            this.n0_textbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Form1
             // 
@@ -317,6 +353,9 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart GTEGraph;
         private System.Windows.Forms.Button plot_button;
         private System.Windows.Forms.Label ErrorText;
+        private System.Windows.Forms.CheckBox Exact_check;
+        private System.Windows.Forms.Label n0_text;
+        private System.Windows.Forms.TextBox n0_textbox;
     }
 }
 
